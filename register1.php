@@ -60,8 +60,9 @@
 
 				<br>
 				<div class="text-center">
+					Already Registerd?
 					<a href="./login.php" class="txt2 hov1">
-						Login
+						Login Here
 					</a>
 				</div>
 			</form>
@@ -106,7 +107,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_p
 	}
 	else
 	{
-		die('Invalid Credentials');
+		die('Error');
 	}
 }
 

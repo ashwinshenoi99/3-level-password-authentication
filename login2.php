@@ -74,11 +74,11 @@ function select(input) {
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-30">
 			<form action="./register.php" method="post" class="login100-form validate-form">
 				<span class="login100-form-title p-b-37">
-					Register
+					Login
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-				<input class="input100" type="text" disabled name="username" placeholder="<?=$_SESSION['reg_username']?>">
+				<input class="input100" type="text" disabled name="username" placeholder="<?=$_SESSION['auth_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -143,15 +143,15 @@ function select(input) {
 <?php
 
 if(isset($_POST['username'])&&isset($_POST['images'])) {
-	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_POST['username']}'";
+	$query = "select * from users where image_hash=sha2('{$_POST['images']}', 512) and username='{$_POST['username']}'";
 	$res = mysqli_query($conn, $query);
 	if($res) {
-		$_SESSION['reg'] = 2;
-		register();
+		$_SESSION['auth'] = 2;
+		login();
 	}
 	else
 	{
-		die('Error');
+		die('Invalid Credentials');
 	}
 }
 

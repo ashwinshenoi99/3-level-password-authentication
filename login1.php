@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V9</title>
+	<title>Register</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -32,46 +32,32 @@
 	
 	<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-30">
-			<form action="asd" method="post" class="login100-form validate-form">
+			<form action="./register.php" method="post" class="login100-form validate-form">
 				<span class="login100-form-title p-b-37">
-					Sign In
+				  Login	
 				</span>
 
-				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
-					<input class="input100" type="text" name="username" placeholder="username or email">
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
+					<input class="input100" type="text" name="username" placeholder="username">
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="wrap-input100 validate-input m-b-25" data-validate = "Enter password">
-					<input class="input100" type="password" name="pass" placeholder="password">
+					<input id="password" class="input100" type="password" name="password" placeholder="password">
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="container-login100-form-btn">
 					<button class="login100-form-btn">
-						Sign In
+						Login
 					</button>
 				</div>
 
-				<div class="text-center p-t-57 p-b-20">
-					<span class="txt1">
-						Or login with
-					</span>
-				</div>
-
-				<div class="flex-c p-b-112">
-					<a href="#" class="login100-social-item">
-						<i class="fa fa-facebook-f"></i>
-					</a>
-
-					<a href="#" class="login100-social-item">
-						<img src="images/icons/icon-google.png" alt="GOOGLE">
-					</a>
-				</div>
-
+				<br>
 				<div class="text-center">
-					<a href="#" class="txt2 hov1">
-						Sign Up
+					New here? 
+					<a href="./register.php" class="txt2 hov1">
+						Register Now
 					</a>
 				</div>
 			</form>
@@ -112,7 +98,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])) {
 	if(mysqli_num_rows($result)>0) {
 		$rows = mysqli_fetch_assoc($result);
 		$_SESSION['auth'] = 1;
-		$_SESSION['username'] = $rows['username'];
+		$_SESSION['auth_username'] = $rows['username'];
 		login();
 	}
 	else
