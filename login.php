@@ -4,8 +4,10 @@ session_start();
 
 include 'config.php';
 
-if($_SESSION['auth']===0||!isset($_SESSION['auth'])) {
+if(!isset($_SESSION['auth'])) {
 	login1();
+} else if($_SESSION['auth']===0) {
+	login();
 } else if($_SESSION['auth']===1) {
 	login2();
 } else if($_SESSION['auth']===2) {
@@ -14,6 +16,10 @@ if($_SESSION['auth']===0||!isset($_SESSION['auth'])) {
 	loggedin();
 } else {
 	http_response_code(400);
+}
+
+function login() {
+	header('Location: ./login.php');
 }
 
 function login1() {
@@ -31,3 +37,5 @@ function login3() {
 function loggedin() {
 	header('Location: ./index.php');
 }
+
+?>

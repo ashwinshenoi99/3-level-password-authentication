@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V9</title>
+	<title>Register</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -26,52 +26,87 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+<style>
+.grid3x3{
+ width:280px;
+ height:280px;
+ clear:both;
+ border: solid;
+}
+.grid3x3>div{
+ width:90px;
+ height:90px;
+ float:left;
+ line-height:100px;
+ text-align:center;
+}
+.grid3x3>div>img{
+ display:inline-block;
+ vertical-align:middle;
+ max-width:80%;
+ max-height:80%;
+}
+img{
+  border: double;
+}
+</style>
 </head>
+<script>
+var selected = new Array();
+
+function select(input) {
+	index = selected.indexOf(input);
+	if(index==-1) {
+		selected.push(input);
+		document.getElementById(input).setAttribute("style","opacity: 0.5;")
+	}
+	else {
+		selected.splice(index,1);
+		document.getElementById(input).setAttribute("style","opacity: 1;")
+	}
+	document.getElementById("images").setAttribute("value", selected.toString());
+}
+</script>
 <body>
 	
 	
 	<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-30">
-			<form action="asd" method="post" class="login100-form validate-form">
+			<form action="./register.php" method="post" class="login100-form validate-form">
 				<span class="login100-form-title p-b-37">
-					Sign In
+					Register
 				</span>
 
-				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username or email">
-					<input class="input100" type="text" name="username" placeholder="username or email">
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
+				<input class="input100" type="text" disabled name="username" placeholder="<?=$_SESSION['reg_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
-				<div class="wrap-input100 validate-input m-b-25" data-validate = "Enter password">
-					<input class="input100" type="password" name="pass" placeholder="password">
-					<span class="focus-input100"></span>
+				<input type="hidden" name="images" id="images"/>
+
+				<div class="grid3x3">
+				 <div><img onclick="select('batman.jpg');" id='batman.jpg' src="./images/img/batman.jpg"></div>
+				 <div><img onclick="select('captainamerica.jpg');" id='captainamerica.jpg' src="./images/img/captainamerica.jpg"></div>
+				 <div><img onclick="select('deadpool.jpg');" id='deadpool.jpg' src="./images/img/deadpool.jpg"></div>
+				 <div><img onclick="select('greenlantern.jpg');" id='greenlantern.jpg' src="./images/img/greenlantern.jpg"></div>
+				 <div><img onclick="select('ironman.jpg');" id='ironman.jpg' src="./images/img/ironman.jpg"></div>
+				 <div><img onclick="select('shield.jpg');" id='shield.jpg' src="./images/img/shield.jpg"></div>
+				 <div><img onclick="select('spiderman.jpg');" id='spiderman.jpg' src="./images/img/spiderman.jpg"></div>
+				 <div><img onclick="select('thor.jpg');" id='thor.jpg' src="./images/img/thor.jpg"></div>
+				 <div><img onclick="select('wolverine.jpg');" id='wolverine.jpg' src="./images/img/wolverine.jpg"></div>
 				</div>
 
+				<br>
 				<div class="container-login100-form-btn">
 					<button class="login100-form-btn">
-						Sign In
+						Register
 					</button>
 				</div>
 
-				<div class="text-center p-t-57 p-b-20">
-					<span class="txt1">
-						Or login with
-					</span>
-				</div>
-
-				<div class="flex-c p-b-112">
-					<a href="#" class="login100-social-item">
-						<i class="fa fa-facebook-f"></i>
-					</a>
-
-					<a href="#" class="login100-social-item">
-						<img src="images/icons/icon-google.png" alt="GOOGLE">
-					</a>
-				</div>
-
+				<br>
 				<div class="text-center">
-					<a href="#" class="txt2 hov1">
-						Sign Up
+					<a href="./login.php" class="txt2 hov1">
+						Login
 					</a>
 				</div>
 			</form>
@@ -106,14 +141,12 @@
 
 <?php
 
-if(isset($_POST['username'])&&isset($_POST['password'])) {
-	$query = "select * from users where username='{$_POST['username']}' and password=md5('{$_POST['password']}')";
+if(isset($_POST['username'])&&isset($_POST['images'])) {
+	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_POST['username']}'";
 	$res = mysqli_query($conn, $query);
-	if(mysqli_num_rows($result)>0) {
-		$rows = mysqli_fetch_assoc($result);
-		$_SESSION['auth'] = 1;
-		$_SESSION['username'] = $rows['username'];
-		login();
+	if($res) {
+		$_SESSION['reg'] = 2;
+		register();
 	}
 	else
 	{

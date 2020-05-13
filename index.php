@@ -7,4 +7,4 @@ if($_SESSION['auth']!=3) {
 	exit();
 }
 
-
+?>

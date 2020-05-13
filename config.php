@@ -16,4 +16,3 @@ $db = 'se';
 $conn = mysqli_connect($hostname, $username, $password, $db);
 
 ?>
-

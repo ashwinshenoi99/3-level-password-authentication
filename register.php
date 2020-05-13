@@ -6,8 +6,11 @@ include 'config.php';
 
 if($_SESSION['auth']===3) {
 	header('Location: ./index.php');
+}
 
-if($_SESSION['reg']===0||!isset($_SESSION['reg'])) {
+if(!isset($_SESSION['reg'])) {
+	register1();
+} else if($_SESSION['reg']===0) {
 	register1();
 } else if($_SESSION['reg']===1) {
 	register2();
@@ -38,3 +41,5 @@ function register3() {
 function registered() {
 	header('Location: ./index.php');
 }
+
+?>

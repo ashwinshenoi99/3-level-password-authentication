@@ -52,6 +52,11 @@
                 return false;
             }
         }
+		if($(input).attr('name') == 'confirm_password') {
+			if($('#password').val() != $('#confirm_password').val()) {
+				return false;
+			}
+		}
     }
 
     function showValidate(input) {
