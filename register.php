@@ -2,10 +2,10 @@
 
 session_start();
 
-include 'config.php';
-
-if($_SESSION['auth']===3) {
-	header('Location: ./index.php');
+if(isset($_SESSION['auth'])) {
+	if($_SESSION['auth']===3) {
+		header('Location: ./index.php');
+	}
 }
 
 if(!isset($_SESSION['reg'])) {

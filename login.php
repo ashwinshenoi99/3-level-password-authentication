@@ -2,8 +2,6 @@
 
 session_start();
 
-include 'config.php';
-
 if(!isset($_SESSION['auth'])) {
 	login1();
 } else if($_SESSION['auth']===0) {

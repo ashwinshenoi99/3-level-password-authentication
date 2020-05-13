@@ -1,7 +1,30 @@
+<?php
+
+session_start();
+
+include 'config.php';
+
+if(isset($_POST['username'])&&isset($_POST['password'])) {
+	$query = "select * from users where username='{$_POST['username']}' and password=md5('{$_POST['password']}')";
+	$result = mysqli_query($conn, $query);
+	if(mysqli_num_rows($result)>0) {
+		$rows = mysqli_fetch_assoc($result);
+		$_SESSION['auth'] = 1;
+		$_SESSION['auth_username'] = $rows['username'];
+		login();
+	}
+	else
+	{
+		die('Invalid Credentials');
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Register</title>
+	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -32,7 +55,7 @@
 	
 	<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-30">
-			<form action="./register.php" method="post" class="login100-form validate-form">
+			<form action="./login.php" method="post" class="login100-form validate-form">
 				<span class="login100-form-title p-b-37">
 				  Login	
 				</span>
@@ -89,22 +112,3 @@
 
 </body>
 </html>
-
-<?php
-
-if(isset($_POST['username'])&&isset($_POST['password'])) {
-	$query = "select * from users where username='{$_POST['username']}' and password=md5('{$_POST['password']}')";
-	$res = mysqli_query($conn, $query);
-	if(mysqli_num_rows($result)>0) {
-		$rows = mysqli_fetch_assoc($result);
-		$_SESSION['auth'] = 1;
-		$_SESSION['auth_username'] = $rows['username'];
-		login();
-	}
-	else
-	{
-		die('Invalid Credentials');
-	}
-}
-
-?>

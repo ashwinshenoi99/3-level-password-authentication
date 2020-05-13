@@ -1,3 +1,25 @@
+<?php
+
+session_start();
+
+include 'config.php';
+
+if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_password'])&&($_POST['password']===$_POST['confirm_password'])) {
+	$query = "insert into users(username, password) values('{$_POST['username']}', md5('{$_POST['password']}'))";
+	$res = mysqli_query($conn, $query);
+	if($res) {
+		$_SESSION['reg'] = 1;
+		$_SESSION['reg_username'] = $_POST['username'];
+		register();
+	}
+	else
+	{
+		die('Error');
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,21 +116,3 @@
 
 </body>
 </html>
-
-<?php
-
-if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_password'])&&($_POST['password']===$_POST['confirm_password'])) {
-	$query = "insert into users(username, password) values('{$_POST['username']}', md5('{$_POST['password']}'))";
-	$res = mysqli_query($conn, $query);
-	if($res) {
-		$_SESSION['reg'] = 1;
-		$_SESSION['reg_username'] = $rows['username'];
-		register();
-	}
-	else
-	{
-		die('Error');
-	}
-}
-
-?>

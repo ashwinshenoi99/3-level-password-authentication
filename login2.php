@@ -1,7 +1,28 @@
+<?php
+
+session_start();
+
+include 'config.php';
+
+if(isset($_POST['username'])&&isset($_POST['images'])) {
+	$query = "select * from users where image_hash=sha2('{$_POST['images']}', 512) and username='{$_POST['username']}'";
+	$res = mysqli_query($conn, $query);
+	if($res) {
+		$_SESSION['auth'] = 2;
+		login();
+	}
+	else
+	{
+		die('Invalid Credentials');
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Register</title>
+	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -72,13 +93,13 @@ function select(input) {
 	
 	<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-30">
-			<form action="./register.php" method="post" class="login100-form validate-form">
+			<form action="./login.php" method="post" class="login100-form validate-form">
 				<span class="login100-form-title p-b-37">
 					Login
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-				<input class="input100" type="text" disabled name="username" placeholder="<?=$_SESSION['auth_username']?>">
+				<input class="input100" type="text" disabled name="username" value="<?=$_SESSION['auth_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -99,15 +120,15 @@ function select(input) {
 				<br>
 				<div class="container-login100-form-btn">
 					<button class="login100-form-btn">
-						Register
+						Login
 					</button>
 				</div>
 
 				<br>
 				<div class="text-center">
-					Already Registered?
-					<a href="./login.php" class="txt2 hov1">
-						Login Here
+					New Here?
+					<a href="./register.php" class="txt2 hov1">
+						Register Now
 					</a>
 				</div>
 			</form>
@@ -139,20 +160,3 @@ function select(input) {
 
 </body>
 </html>
-
-<?php
-
-if(isset($_POST['username'])&&isset($_POST['images'])) {
-	$query = "select * from users where image_hash=sha2('{$_POST['images']}', 512) and username='{$_POST['username']}'";
-	$res = mysqli_query($conn, $query);
-	if($res) {
-		$_SESSION['auth'] = 2;
-		login();
-	}
-	else
-	{
-		die('Invalid Credentials');
-	}
-}
-
-?>

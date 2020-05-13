@@ -1,3 +1,24 @@
+<?php
+
+session_start();
+
+include 'config.php';
+
+if(isset($_POST['username'])&&isset($_POST['images'])) {
+	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_POST['username']}'";
+	$res = mysqli_query($conn, $query);
+	if($res) {
+		$_SESSION['reg'] = 2;
+		register();
+	}
+	else
+	{
+		die('Error');
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +99,7 @@ function select(input) {
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-				<input class="input100" type="text" disabled name="username" placeholder="<?=$_SESSION['reg_username']?>">
+				<input class="input100" type="text" disabled name="username" value="<?=$_SESSION['reg_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -139,20 +160,3 @@ function select(input) {
 
 </body>
 </html>
-
-<?php
-
-if(isset($_POST['username'])&&isset($_POST['images'])) {
-	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_POST['username']}'";
-	$res = mysqli_query($conn, $query);
-	if($res) {
-		$_SESSION['reg'] = 2;
-		register();
-	}
-	else
-	{
-		die('Error');
-	}
-}
-
-?>
