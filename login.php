@@ -24,10 +24,10 @@ function login2() {
 	include 'login2.php';
 }
 
-function logic3() {
+function login3() {
 	include 'login3.php';
 }
 
 function loggedin() {
-	header('Location: index.php');
+	header('Location: ./index.php');
 }

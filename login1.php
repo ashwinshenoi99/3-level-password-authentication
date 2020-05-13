@@ -17,15 +17,15 @@ if($_SESSION['auth']===0||!isset($_SESSION['auth'])) {
 }
 
 function login2() {
-	header('Location: login2.php');
+	header('Location: ./login2.php');
 }
 
-function logic3() {
-	header('Location: login3.php');
+function login3() {
+	header('Location: ./login3.php');
 }
 
 function loggedin() {
-	header('Location: ../index.php');
+	header('Location: ./index.php');
 }
 
 function login1() {
@@ -37,5 +37,10 @@ function login1() {
 			$_SESSION['auth'] = 1;
 			$_SESSION['username'] = $rows['username'];
 			login2();
+		}
+		else
+		{
+			die('Invalid Credentials');
+		}
 	}
 }
