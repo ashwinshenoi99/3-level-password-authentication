@@ -14,7 +14,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_p
 	}
 	else
 	{
-		die('Error');
+		die(mysqli_error($conn));
 	}
 }
 

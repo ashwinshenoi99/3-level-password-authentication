@@ -13,7 +13,7 @@ if(isset($_POST['username'])&&isset($_POST['images'])) {
 	}
 	else
 	{
-		die('Error');
+		die(mysqli_error($conn));
 	}
 }
 
@@ -99,11 +99,11 @@ function select(input) {
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-				<input class="input100" type="text" disabled name="username" value="<?=$_SESSION['reg_username']?>">
+				<input class="input100" type="text" readonly name="username" value="<?=$_SESSION['reg_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
-				<input type="hidden" name="images" id="images"/>
+				<input type="hidden" name="images" id="images" />
 
 				<div class="grid3x3">
 				 <div><img onclick="select('batman.jpg');" id='batman.jpg' src="./images/img/batman.jpg"></div>

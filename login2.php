@@ -99,7 +99,7 @@ function select(input) {
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-				<input class="input100" type="text" disabled name="username" value="<?=$_SESSION['auth_username']?>">
+				<input class="input100" type="text" readonly name="username" value="<?=$_SESSION['auth_username']?>">
 					<span class="focus-input100"></span>
 				</div>
 
