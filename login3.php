@@ -4,12 +4,14 @@ session_start();
 
 include 'config.php';
 
-if(isset($_POST['username'])&&isset($_POST['images'])) {
-	$query = "select * from users where image_hash=sha2('{$_POST['images']}', 512) and username='{$_POST['username']}'";
+if(isset($_POST['username'])&&isset($_POST['colors'])) {
+	$query = "select * from users where color_hash=sha2('{$_POST['colors']}',512) and username='{$_SESSION['auth_username']}'";
 	$result = mysqli_query($conn, $query);
 	if(mysqli_num_rows($result)>0) {
-		$_SESSION['auth'] = 2;
-		login();
+		$rows = mysqli_fetch_assoc($result);
+		$_SESSION['auth'] = 3;
+		$_SESSION['username'] = $rows['username'];
+		loggedin();
 	}
 	else
 	{
@@ -47,45 +49,21 @@ if(isset($_POST['username'])&&isset($_POST['images'])) {
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-<style>
-.grid3x3{
- width:280px;
- height:280px;
- clear:both;
- border: solid;
-}
-.grid3x3>div{
- width:90px;
- height:90px;
- float:left;
- line-height:100px;
- text-align:center;
-}
-.grid3x3>div>img{
- display:inline-block;
- vertical-align:middle;
- max-width:80%;
- max-height:80%;
-}
-img{
-  border: double;
-}
-</style>
 </head>
 <script>
-var selected = new Array();
-
-function select(input) {
-	index = selected.indexOf(input);
-	if(index==-1) {
-		selected.push(input);
-		document.getElementById(input).setAttribute("style","opacity:0.3;border:solid;")
+function color(inp) {
+	var element = document.getElementById('colors');
+	var prev = element.getAttribute("value") || "";
+	if(prev.length>=30) {
+		return;
 	}
-	else {
-		selected.splice(index,1);
-		document.getElementById(input).setAttribute("style","opacity: 1;")
+	if(inp == 'red') {
+		element.setAttribute("value", prev+"ff0000");
+	} else if(inp == 'green') {
+		element.setAttribute("value", prev+"00ff00");
+	} else if(inp == 'blue') {
+		element.setAttribute("value", prev+"0000ff");
 	}
-	document.getElementById("images").setAttribute("value", selected.toString());
 }
 </script>
 <body>
@@ -102,23 +80,31 @@ function select(input) {
 				<input class="input100" type="text" readonly name="username" value="<?=$_SESSION['auth_username']?>">
 					<span class="focus-input100"></span>
 				</div>
+				
+				<div>
+					<div onclick="color('red')" style="text-align:center;float:left;width:85px;height:85px;border:solid;border-color:red;background-color:red;">
+						<br><br><br><br>Red
+					</div>
 
-				<input type="hidden" name="images" id="images"/>
+					<div onclick="color('green')" style="text-align:center;float:left;margin-left:10px;width:85px;height:85px;border:solid;border-color:green;background-color:green;">
+						<br><br><br><br>Green
+					</div>
 
-				<div class="grid3x3">
-				 <div><img onclick="select('batman.jpg');" id='batman.jpg' src="./images/img/batman.jpg"></div>
-				 <div><img onclick="select('captainamerica.jpg');" id='captainamerica.jpg' src="./images/img/captainamerica.jpg"></div>
-				 <div><img onclick="select('deadpool.jpg');" id='deadpool.jpg' src="./images/img/deadpool.jpg"></div>
-				 <div><img onclick="select('greenlantern.jpg');" id='greenlantern.jpg' src="./images/img/greenlantern.jpg"></div>
-				 <div><img onclick="select('ironman.jpg');" id='ironman.jpg' src="./images/img/ironman.jpg"></div>
-				 <div><img onclick="select('shield.jpg');" id='shield.jpg' src="./images/img/shield.jpg"></div>
-				 <div><img onclick="select('spiderman.jpg');" id='spiderman.jpg' src="./images/img/spiderman.jpg"></div>
-				 <div><img onclick="select('thor.jpg');" id='thor.jpg' src="./images/img/thor.jpg"></div>
-				 <div><img onclick="select('wolverine.jpg');" id='wolverine.jpg' src="./images/img/wolverine.jpg"></div>
+					<div onclick="color('blue')" style="text-align:center;float:left;margin-left:10px;width:85px;height:85px;border:solid;border-color:blue;background-color:blue;">
+						<br><br><br><br>Blue
+					</div>
 				</div>
 
-				<br>
-				<div class="container-login100-form-btn">
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Click color patterns" style="margin-top:160px;">
+				<input readonly id="colors" class="input100" type="text" name="colors">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div onclick="document.getElementById('colors').setAttribute('value','');" style="text-align:center;height:30px;width:50px;border:outset;">
+					Clear
+				</div>
+
+				<div style="margin-top:10px;" class="container-login100-form-btn">
 					<button class="login100-form-btn">
 						Login
 					</button>

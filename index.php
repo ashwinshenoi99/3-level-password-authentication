@@ -7,4 +7,6 @@ if($_SESSION['auth']!=3) {
 	exit();
 }
 
+echo "HELLO: " . $_SESSION['username'];
+
 ?>
