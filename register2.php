@@ -5,7 +5,7 @@ session_start();
 include 'config.php';
 
 if(isset($_POST['username'])&&isset($_POST['images'])) {
-	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_POST['username']}'";
+	$query = "update users set image_hash=sha2('{$_POST['images']}', 512) where username='{$_SESSION['reg_username']}'";
 	$res = mysqli_query($conn, $query);
 	if($res) {
 		$_SESSION['reg'] = 2;

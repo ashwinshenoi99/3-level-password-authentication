@@ -4,13 +4,13 @@ session_start();
 
 include 'config.php';
 
-if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_password'])&&($_POST['password']===$_POST['confirm_password'])) {
-	$query = "insert into users(username, password) values('{$_POST['username']}', md5('{$_POST['password']}'))";
+if(isset($_POST['username'])&&isset($_POST['colors'])) {
+	$query = "update users set color_hash=sha2('{$_POST['colors']}',512) where username='{$_SESSION['reg_username']}'";
 	$res = mysqli_query($conn, $query);
 	if($res) {
-		$_SESSION['reg'] = 1;
-		$_SESSION['reg_username'] = $_POST['username'];
-		register();
+		$_SESSION['reg'] = 3;
+		session_destroy();
+		registered();
 	}
 	else
 	{
@@ -49,6 +49,22 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_p
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 </head>
+<script>
+function color(inp) {
+	var element = document.getElementById('colors');
+	var prev = element.getAttribute("value") || "";
+	if(prev.length>=30) {
+		return;
+	}
+	if(inp == 'red') {
+		element.setAttribute("value", prev+"ff0000");
+	} else if(inp == 'green') {
+		element.setAttribute("value", prev+"00ff00");
+	} else if(inp == 'blue') {
+		element.setAttribute("value", prev+"0000ff");
+	}
+}
+</script>
 <body>
 	
 	
@@ -60,21 +76,34 @@ if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['confirm_p
 				</span>
 
 				<div class="wrap-input100 validate-input m-b-20" data-validate="Enter username">
-					<input class="input100" type="text" name="username" placeholder="username">
+				<input class="input100" type="text" readonly name="username" value="<?=$_SESSION['reg_username']?>">
+					<span class="focus-input100"></span>
+				</div>
+				
+				<div>
+					<div onclick="color('red')" style="text-align:center;float:left;width:85px;height:85px;border:solid;border-color:red;background-color:red;">
+						<br><br><br><br>Red
+					</div>
+
+					<div onclick="color('green')" style="text-align:center;float:left;margin-left:10px;width:85px;height:85px;border:solid;border-color:green;background-color:green;">
+						<br><br><br><br>Green
+					</div>
+
+					<div onclick="color('blue')" style="text-align:center;float:left;margin-left:10px;width:85px;height:85px;border:solid;border-color:blue;background-color:blue;">
+						<br><br><br><br>Blue
+					</div>
+				</div>
+
+				<div class="wrap-input100 validate-input m-b-20" data-validate="Click color patterns" style="margin-top:160px;">
+				<input readonly id="colors" class="input100" type="text" name="colors">
 					<span class="focus-input100"></span>
 				</div>
 
-				<div class="wrap-input100 validate-input m-b-25" data-validate = "Enter password">
-					<input id="password" class="input100" type="password" name="password" placeholder="password">
-					<span class="focus-input100"></span>
+				<div onclick="document.getElementById('colors').setAttribute('value','');" style="text-align:center;height:30px;width:50px;border:outset;">
+					Clear
 				</div>
 
-				<div class="wrap-input100 validate-input m-b-25" data-validate = "Confirm password">
-					<input id="confirm_password" class="input100" type="password" name="confirm_password" placeholder="confirm password">
-					<span class="focus-input100"></span>
-				</div>
-
-				<div class="container-login100-form-btn">
+				<div style="margin-top:10px;" class="container-login100-form-btn">
 					<button class="login100-form-btn">
 						Register
 					</button>
